@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="the best travel site">
+  <title>Dashboard - Journey Doc</title>
+  <link rel="icon" href="">
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    crossorigin="anonymous"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+  />
+  <style>
+    body {
+      min-height: 100vh;
+      background-color: #f8f9fa;
+    }
+    .sidebar {
+      min-height: 100vh;
+      background-color: #212529;
+    }
+    .nav-link {
+      color: rgba(255, 255, 255, 0.75);
+    }
+    .nav-link:hover,
+    .nav-link.active {
+      color: #fff;
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    .card-icon {
+      font-size: 2rem;
+      opacity: 0.3;
+    }
+  </style>
+ 
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <header
+    class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-2 shadow"
+  >
+    <a
+      class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 font-monospace fw-bold"
+      href="#"
+    >Journey Doc</a>
+    <div class="navbar-nav flex-row ms-auto align-items-center me-3">
+      <span class="text-light me-3">Hello,
+        <strong>{{username}}</strong></span>
+      <a class="btn btn-outline-light btn-sm" id="logout" href="/logout">Log out</a>
+    </div>
+  </header>
+
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Sidebar -->
+      <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse p-3">
+        <ul class="nav nav-pills flex-column mb-auto">
+          <li class="nav-item mb-1">
+            <a href="#" class="nav-link active rounded">
+              <i class="bi bi-house-door me-2"></i>
+              Home
+            </a>
+          </li>
+          <li class="nav-item mb-1">
+            <a href="#" class="nav-link rounded">
+              <i class="bi bi-file-earmark-text me-2"></i>
+              Documents
+            </a>
+          </li>
+          <li class="nav-item mb-1">
+            <a href="#" class="nav-link rounded">
+              <i class="bi bi-person me-2"></i>
+              Profile
+            </a>
+          </li>
+          <li class="nav-item mb-1">
+            <a href="#" class="nav-link rounded">
+              <i class="bi bi-gear me-2"></i>
+              Settings
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Main Content -->
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+
+        <div
+          class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom"
+        >
+          <h1 class="h2">Overview</h1>
+          <button class="btn btn-primary btn-sm">
+            <i class="bi bi-plus-circle me-1"></i>
+            New Document
+          </button>
+        </div>
+
+        <!-- Metric Cards -->
+        <div class="row g-3 mb-4">
+          <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm p-3">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <h6 class="text-muted fw-normal mb-1">Documents</h6>
+                  <h4 class="mb-0 font-monospace">12</h4>
+                </div>
+                <i class="bi bi-folder-check text-primary card-icon"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm p-3">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <h6 class="text-muted fw-normal mb-1">Account Status</h6>
+                  <span class="badge bg-success fs-6">Active</span>
+                </div>
+                <i class="bi bi-shield-check text-success card-icon"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm p-3">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <h6 class="text-muted fw-normal mb-1">Current Session</h6>
+                  <h6
+                    class="mb-0 text-truncate font-monospace"
+                    style="max-width: 120px;"
+                  >Active Session</h6>
+                </div>
+                <i class="bi bi-key text-warning card-icon"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Activity Table -->
+        <div class="card border-0 shadow-sm">
+          <div class="card-header bg-white py-3">
+            <h5 class="card-title mb-0 fw-bold">Recent Activity</h5>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>Action</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>System Login Successful</td>
+                    <td>Today at {{currentTime}}</td>
+                    <td><span
+                        class="badge bg-info text-dark"
+                      >Success</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+   <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const buttons = document.getElementsByTagName('a');
+      
+      Array.from(buttons).forEach((button) => {
+        button.addEventListener('click', function(event) {
+          if(button.id !== 'logout') {
+            alert(`It hasn't been implemented yet; only the logout button works.`)
+          };
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,42 @@
+{
+  "name": "app_authentication",
+  "version": "1.0.0",
+  "description": "user authentication app",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsx watch src/index.ts",
+    "setup": "tsx watch src/setup.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "author": "elber",
+  "license": "ISC",
+  "dependencies": {
+    "@fastify/cookie": "^11.1.2",
+    "@fastify/cors": "^11.3.0",
+    "@fastify/formbody": "^9.0.0",
+    "@fastify/passport": "^4.0.3",
+    "@fastify/session": "^11.1.3",
+    "@fastify/view": "^12.0.0",
+    "@types/passport-local": "^1.0.38",
+    "dotenv": "^18.0.2",
+    "fastify": "^5.12.5",
+    "handlebars": "^4.7.9",
+    "jsonwebtoken": "^9.0.3",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
+    "passport-local": "^1.0.0",
+    "pg": "^8.23.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.37.8"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^26.6.2",
+    "@types/passport-jwt": "^4.0.1",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}
