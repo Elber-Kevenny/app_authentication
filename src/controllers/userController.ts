@@ -45,7 +45,7 @@ export const sign = async (request: FastifyRequest<{Body: User}>, reply: Fastify
     if (!username || !password) {
       return reply.status(400).send({message: 'form invalid'})
     } await AuthService.register(username, password);
-    return reply.send({message: 'Account created.'})
+    return reply.redirect('/?page=login')
   } catch (e: any) {
     return reply.status(400).send({message: 'Account creation faliled', error: e.message})
   }
