@@ -48,7 +48,7 @@ export const sign = async (
     }
     await AuthService.register(username, password);
 
-    return reply.status(201).redirect("/?page=login");
+    return reply.redirect("/?page=login");
   } catch (e: any) {
     return reply
       .status(400)

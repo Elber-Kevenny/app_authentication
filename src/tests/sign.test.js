@@ -12,12 +12,12 @@ test("Enviando um usuário válido", async () => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      username: "Elber",
+      username: "tt",
       password: "amolary",
     }),
   });
 
-  expect(request.status).toBe(201);
+  expect(request.status).toBe(200);
 });
 
 test("Enviando um usuário inválido", async () => {
