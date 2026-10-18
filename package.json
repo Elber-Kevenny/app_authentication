@@ -5,11 +5,15 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsx watch src/index.ts",
+    "dev": "npx tsx watch src/index.ts",
+    "services:up": "docker compose -f src/infra/compose.yaml up -d",
+    "services:start": "docker compose -f src/infra/compose.yaml start",
+    "services:down": "docker compose -f src/infra/compose.yaml down",
     "setup": "tsx watch src/setup.ts",
     "build": "tsc",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "lint:check": "prettier --check .",
+    "lint:write": "prettier --write ."
   },
   "author": "elber",
   "license": "ISC",
@@ -36,6 +40,8 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^26.6.2",
     "@types/passport-jwt": "^4.0.1",
+    "cross-env": "^10.1.0",
+    "prettier": "^3.9.10",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2"
   }
