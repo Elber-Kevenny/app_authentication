@@ -1,6 +1,6 @@
 import { Sequelize, Options } from "sequelize";
-import 'dotenv/config';
-
+import dotenv from "dotenv";
+import path from "node:path";
 
 // interface Sequelizedb {
 //   host: string,
@@ -11,25 +11,31 @@ import 'dotenv/config';
 //   dialect: string,
 // }
 
+const envFile = ".env.development";
+
+dotenv.config({ path: path.resolve(process.cwd(), envFile) });
+
+console.log("Variáveis carregadas de:", envFile);
+console.log("DB User:", process.env.POSTGRES_USER);
 
 const dbOptions: Options = {
-  host: process.env.DB_HOST,
-  username: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  port: Number(process.env.DB_PORT),
-  dialect: 'postgres',
-}
+  host: process.env.POSTGRES_HOST,
+  username: process.env.POSTGRES_USER,
+  password: process.env.POSTGRES_PASSWORD,
+  database: process.env.POSTGRES_DB,
+  port: Number(process.env.POSTGRES_PORT),
+  dialect: "postgres",
+};
 
-const db = new Sequelize(dbOptions)
+const db = new Sequelize(dbOptions);
 
 try {
-  await db.authenticate()
-  console.log('Connection has been established successfully')
+  await db.authenticate();
+  console.log("Connection has been established successfully");
 } catch (e) {
-  console.error('Unable to connect to the database:', e)
+  console.error("Unable to connect to the database:", e);
 }
 
 export default {
-  db
-}
+  db,
+};

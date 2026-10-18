@@ -1,23 +1,22 @@
-import sequelizedb from '../db/db.js';
-import {Model, DataTypes, CreationOptional } from 'sequelize';
+import sequelizedb from "../db/db.js";
+import { Model, DataTypes, CreationOptional } from "sequelize";
 
 const { db } = sequelizedb;
 
 export interface AccountAttributes {
-  id?: number,
-  username: string,
-  hash: string,
-  salt: string,
+  id?: number;
+  username: string;
+  hash: string;
+  salt: string;
   createdAt?: Date;
   updatedAt?: Date;
-};
+}
 
-
-export class Account 
-  extends Model<AccountAttributes> 
-  implements AccountAttributes 
+export class Account
+  extends Model<AccountAttributes>
+  implements AccountAttributes
 {
- declare id: CreationOptional<number>;
+  declare id: CreationOptional<number>;
   declare username: string;
   declare hash: string;
   declare salt: string;
@@ -25,35 +24,33 @@ export class Account
   declare updatedAt: CreationOptional<Date>;
 }
 
-
- Account.init({
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
+Account.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    hash: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    salt: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   },
-  username: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
+  {
+    sequelize: db,
+    tableName: "Accounts",
   },
-  hash: {
-    type: DataTypes.TEXT,
-    allowNull: false,
-  },
-  salt: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  }
-
- },
-   {
-     sequelize: db,
-    tableName: 'Accounts'
-   }
- )
-
+);
 
 export default {
-  Account
-}
+  Account,
+};
