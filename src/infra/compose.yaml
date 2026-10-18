@@ -1,0 +1,9 @@
+services:
+  db:
+    image: postgres:19rc1-alpine3.23
+    env_file: 
+     - ../../.env.development
+    ports:
+     - "5432:5432"
+
+
