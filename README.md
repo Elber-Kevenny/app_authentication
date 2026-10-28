@@ -29,7 +29,7 @@ The project adopts two modern authentication approaches: **Cookie-based Sessions
 
 ### **Prerequisites**
 
-- Node.js (v18 or higher)
+- Node.js (v20.19.4)
 - Configured and running PostgreSQL Database.
 
 ### **Step by Step**
@@ -38,29 +38,22 @@ The project adopts two modern authentication approaches: **Cookie-based Sessions
 
 ```bash
 git clone https://github.com/Elber-Kevenny/app_authentication.git
-cd nome-do-repositorio
+cd name-of-repository
 
 ```
 
 2. **Install dependencies:**
 
 ```bash
-npm install
-
+npm install and nvm install
 ```
 
 3. **Configure Environment Variables:**
    Create a `.env` file in the root of the project with your database credentials and application secrets:
 
 ```env
-PORT=3000
-DB_HOST=localhost
-DB_PORT=5432
-DB_USER=seu_usuario
-DB_PASS=sua_senha
-DB_NAME=nome_
-SESSION_SECRET=sua_chave_secreta_para_session_super_segura
-JWT_SECRET=sua_chave_secreta_para_jwt_super_segura
+SESSION_SECRET=your_key_secret
+JWT_SECRET=your_key_secret_for_jwt
 
 ```
 

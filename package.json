@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "npx tsx watch src/index.ts",
+    "dev": "npm run services:up && npx tsx watch src/index.ts",
     "services:up": "docker compose -f src/infra/compose.yaml up -d",
     "services:start": "docker compose -f src/infra/compose.yaml start",
     "services:down": "docker compose -f src/infra/compose.yaml down",
@@ -14,8 +14,8 @@
     "start": "node dist/index.js",
     "lint:check": "prettier --check .",
     "lint:write": "prettier --write .",
-    "test": "jest",
-    "test:watch": "jest --watchAll"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watchAll"
   },
   "author": "elber",
   "license": "ISC",
@@ -40,12 +40,14 @@
     "sequelize": "^6.37.8"
   },
   "devDependencies": {
+    "@types/jest": "^30.0.0",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^26.6.2",
     "@types/passport-jwt": "^4.0.1",
     "cross-env": "^10.1.0",
     "prettier": "^3.9.10",
+    "ts-jest": "^29.4.15",
     "tsx": "^4.23.15",
-    "typescript": "^7.0.2"
+    "typescript": "^5.9.3"
   }
 }

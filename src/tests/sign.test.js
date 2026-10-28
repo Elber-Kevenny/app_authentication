@@ -1,23 +1,27 @@
-// afterEach(async () => {
+import sequelizedb from "../db/db.js";
+import "../models/userModel.js";
 
-//   await Account.destroy({
-//     where: { username: "Elber" }
-//   });
-// });
+const { db } = sequelizedb;
 
+const cleanDatabase = async () => {
+  await db.query("drop schema public cascade; create schema public");
+
+  await db.sync({ force: true });
+};
+
+beforeAll(cleanDatabase);
 test("Enviando um usuário válido", async () => {
-  const request = await fetch("http://localhost:3000/account", {
+  const response = await fetch("http://localhost:3000/account", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      username: "tt",
-      password: "amolary",
+      username: "Elber",
+      password: "123",
     }),
   });
-
-  expect(request.status).toBe(200);
+  expect(response.status).toBe(200);
 });
 
 test("Enviando um usuário inválido", async () => {
@@ -28,7 +32,7 @@ test("Enviando um usuário inválido", async () => {
     },
     body: JSON.stringify({
       username: "",
-      password: "amolary",
+      password: "123",
     }),
   });
 
