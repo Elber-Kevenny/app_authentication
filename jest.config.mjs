@@ -7,7 +7,7 @@ dotenv.config({
 
 /** @type {import('jest').Config} */
 const config = {
-  preset: "ts-jest/presets/default-esm", 
+  preset: "ts-jest/presets/default-esm",
   testEnvironment: "node",
   verbose: false,
   clearMocks: true,

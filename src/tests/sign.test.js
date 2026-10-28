@@ -10,31 +10,35 @@ const cleanDatabase = async () => {
 };
 
 beforeAll(cleanDatabase);
-test("Enviando um usuário válido", async () => {
+
+const getResponse = async (body) => {
   const response = await fetch("http://localhost:3000/account", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
+    body,
+  });
+  return response.status;
+};
+
+test("Enviando um usuário válido", async () => {
+  const response = await getResponse(
+    JSON.stringify({
       username: "Elber",
       password: "123",
     }),
-  });
-  expect(response.status).toBe(200);
+  );
+  expect(response).toBe(200);
 });
 
 test("Enviando um usuário inválido", async () => {
-  const request = await fetch("http://localhost:3000/account", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
+  const response = await getResponse(
+    JSON.stringify({
       username: "",
       password: "123",
     }),
-  });
+  );
 
-  expect(request.status).toBe(400);
+  expect(response).toBe(400);
 });
