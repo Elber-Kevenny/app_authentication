@@ -1,5 +1,5 @@
-import sequelizedb from "../db/db.js";
-import "../models/userModel.js";
+import sequelizedb from "../server/db/db.js";
+import "../server/models/userModel.js";
 
 const { db } = sequelizedb;
 

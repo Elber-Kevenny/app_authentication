@@ -6,18 +6,18 @@ import { userRouter } from "./routes/userRouter.js";
 import fastifyCookie from "@fastify/cookie";
 import fastifySession from "@fastify/session";
 import fastifyPassport from "@fastify/passport";
+import cors from "@fastify/cors";
 import "dotenv/config";
 
 const app = fastify();
 const PORT = 3000;
 
 await app.register(fastifyFormbody);
-await app.register(fastifyView, {
-  engine: { handlebars },
-  root: "views",
+await app.register(cors, {
+  origin: "http://localhost:5173",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true,
 });
-
-// session config
 await app.register(fastifyCookie);
 await app.register(fastifySession, {
   secret: process.env.SESSION_SECRET!,

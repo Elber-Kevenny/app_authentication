@@ -47,9 +47,7 @@ export const sign = async (
       return reply.status(400).send({ message: "form invalid" });
     }
     await AuthService.register(username, password);
-    return process.env.NODE_ENV === "test"
-      ? reply.status(200).send({ message: "Account created successfully" })
-      : reply.redirect("/?page=login");
+    return reply.status(200).send({ message: "Account created successfully" });
   } catch (e: any) {
     console.error("error account creation:", e.message);
     return reply

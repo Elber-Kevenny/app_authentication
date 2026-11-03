@@ -1,5 +1,5 @@
 import "@fastify/passport";
-import { AccountAttributes } from "../models/userModel.js";
+import { AccountAttributes } from "../server/models/userModel.ts";
 
 // Extendendo o módulo do @fastify/passport
 declare module "@fastify/passport" {
