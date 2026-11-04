@@ -7,16 +7,6 @@ interface User {
   confirmPassword?: string;
 }
 
-// export const getUser = async (
-//   request: FastifyRequest<{ Querystring: RequestQuery }>,
-//   reply: FastifyReply,
-// ) => {
-//   const { page } = request.query;
-//   const formVars = page ? loginFormVars[page] : loginFormVars.signup;
-
-//   return reply.view("index", formVars);
-// };
-
 export const sign = async (
   request: FastifyRequest<{ Body: User }>,
   reply: FastifyReply,
@@ -66,7 +56,7 @@ export const getDashBoard = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {
-  const user = request.user;
+  const user = request.user as any;
   const isValid = request.isAuthenticated();
   if (!isValid || !user) {
     return reply.status(401).send({ message: "Unauthorized" });
@@ -84,13 +74,13 @@ export const getDashBoard = async (
   });
 
   return reply.status(200).send({
-    username: user.username,
+    username: user?.username,
     currentTime,
   });
 };
 
 export const apiAuth = async (request: FastifyRequest, reply: FastifyReply) => {
-  const { username } = request.user;
+  const { username } = request.user as any;
   const token = AuthService.signJWT(username);
 
   return reply.send({ token });

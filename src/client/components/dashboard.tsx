@@ -3,8 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { DashboardProps } from "../types/props.js";
 import { getUser, logoutUser } from "../fetch/api.js";
 
+interface User {
+  username: string;
+  
+}
+
 export const Dashboard: React.FC<DashboardProps> = () => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const currentTime = new Date().toLocaleTimeString([], {
