@@ -15,6 +15,12 @@ const dbOptions: Options = {
   port: Number(process.env.POSTGRES_PORT),
   dialect: "postgres",
   dialectModule: pg,
+  dialectOptions: process.env.NODE_ENV === "production" ? {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false,
+    },
+  } : {},
 };
 
 const db = new Sequelize(dbOptions);
