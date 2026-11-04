@@ -22,7 +22,7 @@ export const Login: React.FC<LoginProps> = () => {
       await login("/api/auth", { username, password });
       navigate("/dashboard");
     } catch (err: any) {
-      setMessage(err.message || "Invalid username or password");
+      setMessage(err.message);
     }
   };
 

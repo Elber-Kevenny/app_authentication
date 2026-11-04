@@ -63,7 +63,9 @@ export const Dashboard: React.FC<DashboardProps> = () => {
   };
 
   return (
-    <div style={{ minHeight:  "calc(100vh - 150px)", backgroundColor: "#f8f9fa" }}>
+    <div
+      style={{ minHeight: "calc(100vh - 150px)", backgroundColor: "#f8f9fa" }}
+    >
       <header className="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-2 shadow">
         <a
           className="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 font-monospace fw-bold"
@@ -91,7 +93,10 @@ export const Dashboard: React.FC<DashboardProps> = () => {
         <div className="row">
           <nav
             className="col-md-3 col-lg-2 d-md-block collapse p-3"
-            style={{ minHeight:  "calc(100vh - 150px)", backgroundColor: "#212529" }}
+            style={{
+              minHeight: "calc(100vh - 150px)",
+              backgroundColor: "#212529",
+            }}
           >
             <ul className="nav nav-pills flex-column mb-auto">
               <li className="nav-item mb-1">

@@ -28,9 +28,9 @@ export const sign = async (
 
     const token = AuthService.signJWT(newAccount.username);
 
-    return reply.status(201).send({ 
-      username: newAccount.username, 
-      token 
+    return reply.status(201).send({
+      username: newAccount.username,
+      token,
     });
   } catch (e: any) {
     console.error("error account creation:", e.message);
@@ -52,12 +52,14 @@ export const authentication = async (
 
     const token = AuthService.signJWT(user.username);
 
-    return reply.status(200).send({ 
+    return reply.status(200).send({
       message: "Authentication Successfully",
       token,
-      username: user.username
+      username: user.username,
     });
   } catch (e: any) {
+    console.log("authentication:", e);
+
     return reply.status(401).send({
       statusCode: 401,
       message: "Authentication Failed!",
@@ -71,7 +73,7 @@ export const getDashBoard = async (
   reply: FastifyReply,
 ) => {
   const user = request.user as any;
-  
+
   if (!user) {
     return reply.status(401).send({ message: "Unauthorized" });
   }

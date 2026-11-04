@@ -11,12 +11,12 @@ const getHeaders = () => {
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
   };
-  
+
   const token = localStorage.getItem("token");
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
   }
-  
+
   return headers;
 };
 
@@ -29,11 +29,19 @@ export const login = async (url: string, user: User) => {
     body: JSON.stringify(user),
     credentials: "include",
   });
-
-  const responseData = await response.json();
-
+  let responseData: any = {};
+  try {
+    responseData = await response.json();
+  } catch (e) {
+    throw new Error("Invalid username or password");
+  }
   if (!response.ok) {
-    throw new Error(responseData.message || "Invalid username or password");
+    const errorMessage =
+      response.status === 401
+        ? "Invalid username or password"
+        : responseData.message || "Invalid username or password";
+
+    throw new Error(errorMessage);
   }
 
   if (responseData.token) {
@@ -50,7 +58,7 @@ export const fetchPost = async (url: string, user: User) => {
     body: JSON.stringify(user),
     credentials: "include",
   });
-  
+
   const responseData = await response.json();
 
   if (!response.ok) {
@@ -60,7 +68,7 @@ export const fetchPost = async (url: string, user: User) => {
   if (responseData.token) {
     localStorage.setItem("token", responseData.token);
   }
-  
+
   return responseData;
 };
 

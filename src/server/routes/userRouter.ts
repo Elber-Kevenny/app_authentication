@@ -28,7 +28,6 @@ export async function userRouter(app: any, _options: any) {
 
   app.get("/logout", userController.logout);
 
-
   app.get(
     "/dashboard",
     {
