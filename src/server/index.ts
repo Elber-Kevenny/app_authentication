@@ -48,7 +48,7 @@ export default async function buildApp() {
       return account;
     },
   );
-  await app.register(userRouter);
+  await app.register(userRouter, { prefix: "/api" });
 
   return app;
 }

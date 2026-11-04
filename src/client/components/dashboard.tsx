@@ -20,7 +20,7 @@ export const Dashboard: React.FC<DashboardProps> = () => {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const response = await getUser("/dashboard");
+        const response = await getUser("/api/dashboard");
         setUser(response);
       } catch (err: any) {
         console.error(err.message);

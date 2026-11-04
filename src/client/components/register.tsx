@@ -19,7 +19,7 @@ export const Register: React.FC = () => {
     e.preventDefault();
     setMessage("");
     try {
-      await fetchPost("/account", { username, password, confirmPassword });
+      await fetchPost("/api/account", { username, password, confirmPassword });
       navigate("/dashboard");
     } catch (err: any) {
       setMessage(err.message);

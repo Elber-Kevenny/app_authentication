@@ -12,7 +12,7 @@ const cleanDatabase = async () => {
 beforeAll(cleanDatabase);
 
 const getResponse = async (body) => {
-  const response = await fetch("http://localhost:3000/account", {
+  const response = await fetch("http://localhost:3000/api/account", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -19,7 +19,7 @@ export const Login: React.FC<LoginProps> = () => {
     e.preventDefault();
     setMessage("");
     try {
-      await login("/auth", { username, password });
+      await login("/api/auth", { username, password });
       navigate("/dashboard");
     } catch (err: any) {
       setMessage(err.message || "Invalid username or password");

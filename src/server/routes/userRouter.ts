@@ -12,14 +12,14 @@ export async function userRouter(app: any, _options: any) {
     userController.authentication,
   );
   app.post(
-    "/api/auth",
+    "/api-auth",
     {
       preValidation: fastifyPassport.authenticate("local", { session: false }),
     },
     userController.apiAuth,
   );
   app.post(
-    "/api/test",
+    "/test",
     {
       preValidation: fastifyPassport.authenticate("jwt", { session: false }),
     },
