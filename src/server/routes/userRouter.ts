@@ -36,12 +36,5 @@ export async function userRouter(app: any, _options: any) {
     },
     userController.getDashBoard,
   );
-  // app.get(
-  //   "/dashboard",
-  //   {
-  //     preValidation: fastifyPassport.authenticate("session"),
-  //   },
-  //   userController.getDashBoard,
-  // );
   app.get("/status", getStatus);
 }

@@ -35,7 +35,7 @@ export const Login: React.FC<LoginProps> = () => {
   return (
     <div
       className="d-flex align-items-center justify-content-center bg-light"
-      style={{ minHeight: "100vh", padding: "50px" }}
+      style={{ minHeight: "calc(100vh - 90px)", padding: "50px" }}
     >
       <FormCp
         title={title}
