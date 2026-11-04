@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { register } from "../fetch/api.js";
+import { fetchPost } from "../fetch/api.js";
 import { FormCp } from "./form.js";
 
 export const Register: React.FC = () => {
@@ -17,25 +17,18 @@ export const Register: React.FC = () => {
 
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
-
-    if (password !== confirmPassword) {
-      setMessage("As senhas não coincidem!");
-      return;
-    }
+    setMessage("");
     try {
-      const data = await register("/account", { username, password });
-
-      navigate("/login");
+      await fetchPost("/account", { username, password, confirmPassword });
+      navigate("/dashboard");
     } catch (err: any) {
-      setMessage(err.message || "Erro ao tentar registrar");
+      setMessage(err.message);
     }
   };
-
   const handleSwitchPage = (e: React.MouseEvent) => {
     e.preventDefault();
     navigate("/login");
   };
-
   return (
     <div
       className="d-flex align-items-center justify-content-center bg-light"

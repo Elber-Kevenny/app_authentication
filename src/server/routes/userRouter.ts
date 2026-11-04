@@ -1,8 +1,8 @@
+import { getStatus } from "../status/status.js";
 import * as userController from "../controllers/userController.js";
 import fastifyPassport from "@fastify/passport";
 
 export async function userRouter(app: any, _options: any) {
-  app.get("/", userController.getUser);
   app.post("/account", userController.sign);
   app.post(
     "/auth",
@@ -27,5 +27,12 @@ export async function userRouter(app: any, _options: any) {
   );
 
   app.get("/logout", userController.logout);
-  app.get("/dashboard", userController.getDashBoard);
+  app.get(
+    "/dashboard",
+    {
+      preValidation: fastifyPassport.authenticate("session"),
+    },
+    userController.getDashBoard,
+  );
+  app.get("/status", getStatus);
 }

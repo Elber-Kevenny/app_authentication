@@ -1,44 +1,34 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LoginProps } from "../types/props.js";
-import { register } from "../fetch/api.js";
+import { login } from "../fetch/api.js";
 import { FormCp } from "./form.js";
 
-export const Login: React.FC<LoginProps> = ({ initialIsRegister = false }) => {
-  const [isRegister, setIsRegister] = useState(initialIsRegister);
+export const Login: React.FC<LoginProps> = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
 
   const navigate = useNavigate();
 
-  const title = isRegister ? "Register" : "Login";
-  const switchMessage = isRegister
-    ? "Already have an account?"
-    : "Don't have an account?";
-  const switchLinkText = isRegister ? "Sign in" : "Sign up";
+  const title = "Login";
+  const switchMessage = "Don't have an account?";
+  const switchLinkText = "Sign up";
 
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
+    setMessage("");
     try {
-      const data = await register("/account", { username, password });
-      if (data) {
-        navigate("/login");
-      } else {
-        setMessage(data.message);
-        return;
-      }
+      await login("/auth", { username, password });
+      navigate("/dashboard");
     } catch (err: any) {
-      setMessage(err.message || "Erro ao tentar registrar");
-      return;
+      setMessage(err.message || "Invalid username or password");
     }
-    navigate("/dashboard");
   };
 
   const handleSwitchPage = (e: React.MouseEvent) => {
     e.preventDefault();
-    setIsRegister(!isRegister);
+    navigate("/register");
     setMessage("");
   };
 
@@ -48,14 +38,11 @@ export const Login: React.FC<LoginProps> = ({ initialIsRegister = false }) => {
       style={{ minHeight: "100vh", padding: "50px" }}
     >
       <FormCp
-      isRegister={isRegister}
         title={title}
         username={username}
         setUsername={setUsername}
         password={password}
         setPassword={setPassword}
-        confirmPassword={confirmPassword}
-        setConfirmPassword={setConfirmPassword}
         message={message}
         switchMessage={switchMessage}
         switchLinkText={switchLinkText}

@@ -26,10 +26,11 @@ test("Enviando um usuário válido", async () => {
   const response = await getResponse(
     JSON.stringify({
       username: "Elber",
-      password: "123",
+      password: "123456",
+      confirmPassword: "123456",
     }),
   );
-  expect(response).toBe(200);
+  expect(response).toBe(201);
 });
 
 test("Enviando um usuário inválido", async () => {

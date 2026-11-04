@@ -75,6 +75,7 @@ export class AuthService {
   };
 
   static passportAuthenticate = () => {
+    // responsável pela autenticação local
     return async (username: string, password: string, done: any) => {
       try {
         const account = await this.findByUsername(username);
@@ -86,7 +87,7 @@ export class AuthService {
         if (isValid) {
           return done(null, account);
         } else {
-          return done(null, false, { message: "Password incorrect" });
+          return done(null, false, { message: "invalid username or password" });
         }
       } catch (e) {
         return done(e);

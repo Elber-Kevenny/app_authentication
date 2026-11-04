@@ -6,16 +6,15 @@ export interface LoginProps {
   initialIsRegister?: boolean;
 }
 
-
 export interface FormCpProps {
-  isRegister: boolean;
+  isRegister?: boolean;
   title: string;
   username: string;
   setUsername: (value: string) => void;
   password: string;
   setPassword: (value: string) => void;
-  confirmPassword: string;
-  setConfirmPassword: (value: string) => void;
+  confirmPassword?: string;
+  setConfirmPassword?: (value: string) => void;
   message: string;
   switchMessage: string;
   switchLinkText: string;

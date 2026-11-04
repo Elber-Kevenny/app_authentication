@@ -1,6 +1,5 @@
-import React from "react"
+import React from "react";
 import { FormCpProps } from "../types/props.js";
-
 
 export const FormCp: React.FC<FormCpProps> = ({
   isRegister,
@@ -69,7 +68,7 @@ export const FormCp: React.FC<FormCpProps> = ({
             id="confirmPasswordInput"
             className="form-control"
             value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            onChange={(e) => setConfirmPassword?.(e.target.value)}
             required
           />
         </div>

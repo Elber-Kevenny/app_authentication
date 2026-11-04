@@ -1,58 +1,47 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import fastifyPassport from "@fastify/passport";
 import { AuthService } from "../services/authService.js";
 
-const loginFormVars = {
-  signup: {
-    title: "Sign up",
-    message: "Already have an account",
-    route: "/account",
-    switchPage: "login",
-    showExtraFields: true,
-  },
-  login: {
-    title: "log in",
-    message: "Need to create an account?",
-    route: "/auth",
-    switchPage: "signup",
-    showExtraFields: false,
-  },
-};
 interface User {
-  [username: string]: string;
-  password?: any;
+  username: string;
+  password?: string;
+  confirmPassword?: string;
 }
 
-interface RequestQuery {
-  page?: keyof typeof loginFormVars;
-}
+// export const getUser = async (
+//   request: FastifyRequest<{ Querystring: RequestQuery }>,
+//   reply: FastifyReply,
+// ) => {
+//   const { page } = request.query;
+//   const formVars = page ? loginFormVars[page] : loginFormVars.signup;
 
-export const getUser = async (
-  request: FastifyRequest<{ Querystring: RequestQuery }>,
-  reply: FastifyReply,
-) => {
-  const { page } = request.query;
-  const formVars = page ? loginFormVars[page] : loginFormVars.signup;
-
-  return reply.view("index", formVars);
-};
+//   return reply.view("index", formVars);
+// };
 
 export const sign = async (
   request: FastifyRequest<{ Body: User }>,
   reply: FastifyReply,
 ) => {
-  const { username, password } = request.body;
+  const { username, password, confirmPassword } = request.body;
   try {
-    if (!username || !password) {
-      return reply.status(400).send({ message: "form invalid" });
+    if (!username || !password || !confirmPassword) {
+      throw new Error("Form invalid");
     }
-    await AuthService.register(username, password);
-    return reply.status(200).send({ message: "Account created successfully" });
+
+    if (password.length < 6) {
+      throw new Error("Password must be at least 6 characters long");
+    }
+
+    if (password !== confirmPassword) {
+      throw new Error("Passwords do not match");
+    }
+    const newAccount = await AuthService.register(username, password);
+    await request.logIn(newAccount);
+    return reply.status(201).send({ username: newAccount.username });
   } catch (e: any) {
     console.error("error account creation:", e.message);
     return reply
       .status(400)
-      .send({ message: "Account creation faliled", error: e.message });
+      .send({ message: e.message, error: "Account creation faliled" });
   }
 };
 
@@ -62,12 +51,13 @@ export const authentication = async (
 ) => {
   try {
     if (request.user) {
-      return reply.redirect("/dashboard");
+      return reply.status(201).send({ message: "Authentication Successfully" });
     }
   } catch (e: any) {
     return reply.status(401).send({
+      statusCode: 401,
       message: "Authentication Failed!",
-      error: "invalid username or password",
+      error: e.message,
     });
   }
 };
@@ -79,9 +69,8 @@ export const getDashBoard = async (
   const user = request.user;
   const isValid = request.isAuthenticated();
   if (!isValid || !user) {
-    return reply.redirect("/?page=login");
+    return reply.status(401).send({ message: "Unauthorized" });
   }
-
   reply.header(
     "Cache-Control",
     "no-store, no-cache, must-revalidate, proxy-revalidate",
@@ -94,7 +83,7 @@ export const getDashBoard = async (
     minute: "2-digit",
   });
 
-  return reply.view("dashboard", {
+  return reply.status(200).send({
     username: user.username,
     currentTime,
   });
@@ -120,21 +109,4 @@ export const logout = async (request: FastifyRequest, reply: FastifyReply) => {
     await request.session.destroy();
   }
   reply.clearCookie("sessionId");
-
-  reply.redirect("/?page=login");
 };
-
-fastifyPassport.registerUserSerializer(async (user: any, _request) => {
-  return user.username;
-});
-fastifyPassport.registerUserDeserializer(async (username: string, _request) => {
-  const account = await AuthService.findByUsername(username);
-
-  if (!account) {
-    throw new Error("User not found");
-  }
-  return account;
-});
-
-fastifyPassport.use("local", AuthService.genStrategy());
-fastifyPassport.use("jwt", AuthService.genJWTStrategy());

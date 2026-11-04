@@ -1,25 +1,65 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { DashboardProps } from '../types/props.js';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { DashboardProps } from "../types/props.js";
+import { getUser, logoutUser } from "../fetch/api.js";
 
-
-
-export const Dashboard: React.FC<DashboardProps> = ({ username = 'Usuário' }) => {
+export const Dashboard: React.FC<DashboardProps> = () => {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const currentTime = new Date().toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
-  const handleNotImplemented = (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        const response = await getUser("/dashboard");
+        setUser(response);
+      } catch (err: any) {
+        console.error(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
+
+  if (loading) {
+    return <p>Verifying authentication......</p>;
+  }
+
+  if (!user) {
+    return (
+      <div style={{ textAlign: "center", marginTop: "50px" }}>
+        <h2>Access denied</h2>
+        <p>You need to sign in to view this page.</p>
+        <a href="/login">Go to Login</a>
+      </div>
+    );
+  }
+
+  const handleNotImplemented = (
+    e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>,
+  ) => {
     e.preventDefault();
     alert("It hasn't been implemented yet; only the logout button works.");
   };
 
-  const handleLogout = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleLogout = async (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    navigate('/login');
+    try {
+      await logoutUser("/logout");
+      navigate("/login");
+    } catch (e: any) {
+      console.error(e.message);
+    }
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#f8f9fa' }}>
+    <div style={{ minHeight: "100vh", backgroundColor: "#f8f9fa" }}>
       <header className="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-2 shadow">
         <a
           className="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 font-monospace fw-bold"
@@ -30,7 +70,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ username = 'Usuário' }) =
         </a>
         <div className="navbar-nav flex-row ms-auto align-items-center me-3">
           <span className="text-light me-3">
-            Hello, <strong>{username}</strong>
+            Hello, <strong>{user ? user.username : ""}</strong>
           </span>
           <a
             className="btn btn-outline-light btn-sm"
@@ -45,17 +85,16 @@ export const Dashboard: React.FC<DashboardProps> = ({ username = 'Usuário' }) =
 
       <div className="container-fluid">
         <div className="row">
-          {/* Sidebar */}
           <nav
             className="col-md-3 col-lg-2 d-md-block collapse p-3"
-            style={{ minHeight: '100vh', backgroundColor: '#212529' }}
+            style={{ minHeight: "100vh", backgroundColor: "#212529" }}
           >
             <ul className="nav nav-pills flex-column mb-auto">
               <li className="nav-item mb-1">
                 <a
                   href="#"
                   className="nav-link active rounded text-white"
-                  style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
+                  style={{ backgroundColor: "rgba(255, 255, 255, 0.1)" }}
                   onClick={handleNotImplemented}
                 >
                   <i className="bi bi-house-door me-2"></i>
@@ -98,7 +137,10 @@ export const Dashboard: React.FC<DashboardProps> = ({ username = 'Usuário' }) =
           <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
             <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
               <h1 className="h2">Overview</h1>
-              <button className="btn btn-primary btn-sm" onClick={handleNotImplemented}>
+              <button
+                className="btn btn-primary btn-sm"
+                onClick={handleNotImplemented}
+              >
                 <i className="bi bi-plus-circle me-1"></i>
                 New Document
               </button>
@@ -114,7 +156,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ username = 'Usuário' }) =
                     </div>
                     <i
                       className="bi bi-folder-check text-primary"
-                      style={{ fontSize: '2rem', opacity: 0.3 }}
+                      style={{ fontSize: "2rem", opacity: 0.3 }}
                     ></i>
                   </div>
                 </div>
@@ -124,12 +166,14 @@ export const Dashboard: React.FC<DashboardProps> = ({ username = 'Usuário' }) =
                 <div className="card border-0 shadow-sm p-3">
                   <div className="d-flex justify-content-between align-items-center">
                     <div>
-                      <h6 className="text-muted fw-normal mb-1">Account Status</h6>
+                      <h6 className="text-muted fw-normal mb-1">
+                        Account Status
+                      </h6>
                       <span className="badge bg-success fs-6">Active</span>
                     </div>
                     <i
                       className="bi bi-shield-check text-success"
-                      style={{ fontSize: '2rem', opacity: 0.3 }}
+                      style={{ fontSize: "2rem", opacity: 0.3 }}
                     ></i>
                   </div>
                 </div>
@@ -139,17 +183,19 @@ export const Dashboard: React.FC<DashboardProps> = ({ username = 'Usuário' }) =
                 <div className="card border-0 shadow-sm p-3">
                   <div className="d-flex justify-content-between align-items-center">
                     <div>
-                      <h6 className="text-muted fw-normal mb-1">Current Session</h6>
+                      <h6 className="text-muted fw-normal mb-1">
+                        Current Session
+                      </h6>
                       <h6
                         className="mb-0 text-truncate font-monospace"
-                        style={{ maxWidth: '120px' }}
+                        style={{ maxWidth: "120px" }}
                       >
                         Active Session
                       </h6>
                     </div>
                     <i
                       className="bi bi-key text-warning"
-                      style={{ fontSize: '2rem', opacity: 0.3 }}
+                      style={{ fontSize: "2rem", opacity: 0.3 }}
                     ></i>
                   </div>
                 </div>
@@ -176,7 +222,9 @@ export const Dashboard: React.FC<DashboardProps> = ({ username = 'Usuário' }) =
                         <td>System Login Successful</td>
                         <td>Today at {currentTime}</td>
                         <td>
-                          <span className="badge bg-info text-dark">Success</span>
+                          <span className="badge bg-info text-dark">
+                            Success
+                          </span>
                         </td>
                       </tr>
                     </tbody>

@@ -10,20 +10,20 @@ The project adopts two modern authentication approaches: **Cookie-based Sessions
 
 ### **Backend & Database**
 
-* **Node.js** with **TypeScript**: Static typing for greater control, security, and code maintainability.
-* **Fastify**: Web framework focused on high performance and low overhead.
-* **Sequelize**: ORM for manipulation and integration with the **PostgreSQL** database.
-* **Docker & Docker Compose**: Containerization tool used to provision and isolate the PostgreSQL database service.
-* **Node Crypto (`pbkdf2`)**: Native Node.js module used for secure password hashing with *Salt*.
-* **Passport.js (`@fastify/passport`)**: Flexible authentication middleware to manage sessions and JWT strategies.
-* **`@fastify/session` & `@fastify/cookie**`: Management and persistence of user sessions via cookies.
-* **JSON Web Token (JWT)**: Stateless authentication for API routes.
-* **Jest (`ts-jest`)**: Automated integration testing framework.
+- **Node.js** with **TypeScript**: Static typing for greater control, security, and code maintainability.
+- **Fastify**: Web framework focused on high performance and low overhead.
+- **Sequelize**: ORM for manipulation and integration with the **PostgreSQL** database.
+- **Docker & Docker Compose**: Containerization tool used to provision and isolate the PostgreSQL database service.
+- **Node Crypto (`pbkdf2`)**: Native Node.js module used for secure password hashing with _Salt_.
+- **Passport.js (`@fastify/passport`)**: Flexible authentication middleware to manage sessions and JWT strategies.
+- **`@fastify/session` & `@fastify/cookie**`: Management and persistence of user sessions via cookies.
+- **JSON Web Token (JWT)**: Stateless authentication for API routes.
+- **Jest (`ts-jest`)**: Automated integration testing framework.
 
 ### **Frontend**
 
-* **Handlebars.js (`@fastify/view`)**: Template engine for dynamic server-side rendering.
-* **Bootstrap 5 & Bootstrap Icons**: CSS framework for modern and responsive styling of the Dashboard.
+- **Handlebars.js (`@fastify/view`)**: Template engine for dynamic server-side rendering.
+- **Bootstrap 5 & Bootstrap Icons**: CSS framework for modern and responsive styling of the Dashboard.
 
 ---
 
@@ -31,8 +31,8 @@ The project adopts two modern authentication approaches: **Cookie-based Sessions
 
 ### **Prerequisites**
 
-* Node.js (v20.19.4)
-* Docker & Docker Compose (for running the PostgreSQL database container)
+- Node.js (v20.19.4)
+- Docker & Docker Compose (for running the PostgreSQL database container)
 
 ### **Step by Step**
 
@@ -52,7 +52,7 @@ npm install and nvm install
 ```
 
 3. **Configure Environment Variables:**
-Create a `.env` file in the root of the project with your database credentials and application secrets:
+   Create a `.env` file in the root of the project with your database credentials and application secrets:
 
 ```env
 SESSION_SECRET=your_key_secret
@@ -61,7 +61,7 @@ JWT_SECRET=your_key_secret_for_jwt
 ```
 
 4. **Start the Infrastructure (Database Container):**
-Use the provided Docker Compose scripts to spin up the PostgreSQL container:
+   Use the provided Docker Compose scripts to spin up the PostgreSQL container:
 
 ```bash
 npm run services:up
@@ -76,7 +76,7 @@ npm run dev
 ```
 
 6. **Run Integration Tests:**
-To execute the integration test suite (which targets the account endpoints and automatically resets/cleans the database schema before running), use:
+   To execute the integration test suite (which targets the account endpoints and automatically resets/cleans the database schema before running), use:
 
 ```bash
 npm run test:watch
@@ -84,7 +84,7 @@ npm run test:watch
 ```
 
 7. **Access the application:**
-Access the URL in your browser: `http://localhost:3000`
+   Access the URL in your browser: `http://localhost:3000`
 
 ---
 
@@ -92,9 +92,9 @@ Access the URL in your browser: `http://localhost:3000`
 
 The project includes convenient helper scripts in `package.json` to manage the infrastructure database container via Docker Compose:
 
-* **`npm run services:up`**: Runs `docker compose -f src/infra/compose.yaml up -d` to create and start the database container in the background.
-* **`npm run services:start`**: Runs `docker compose -f src/infra/compose.yaml start` to resume an already existing stopped container.
-* **`npm run services:down`**: Runs `docker compose -f src/infra/compose.yaml down` to stop and clean up the database container resources.
+- **`npm run services:up`**: Runs `docker compose -f src/infra/compose.yaml up -d` to create and start the database container in the background.
+- **`npm run services:start`**: Runs `docker compose -f src/infra/compose.yaml start` to resume an already existing stopped container.
+- **`npm run services:down`**: Runs `docker compose -f src/infra/compose.yaml down` to stop and clean up the database container resources.
 
 ---
 
@@ -102,8 +102,8 @@ The project includes convenient helper scripts in `package.json` to manage the i
 
 The project includes **integration tests** (located under `src/tests/`) that perform real HTTP requests using `fetch` against the Fastify server and interact directly with the PostgreSQL test schema.
 
-* **How it works:** Before running the test suites (`beforeAll`), a database cleanup helper drops and recreates the public schema (`drop schema public cascade; create schema public`) and synchronizes the Sequelize models, ensuring a clean state for every test run.
-* **Command:** `npm run test:watch` runs the Jest test runner in watch mode, automatically re-running integration tests and resetting the database on code changes.
+- **How it works:** Before running the test suites (`beforeAll`), a database cleanup helper drops and recreates the public schema (`drop schema public cascade; create schema public`) and synchronizes the Sequelize models, ensuring a clean state for every test run.
+- **Command:** `npm run test:watch` runs the Jest test runner in watch mode, automatically re-running integration tests and resetting the database on code changes.
 
 ---
 
@@ -115,9 +115,9 @@ In this project, the application **never stores and never knows the user's real 
 
 #### 💡 **Advantages of this approach:**
 
-* **Security against Database leaks:** If an attacker breaches the database and gains access to the user table, they will only see random character strings (*hash* and *salt*). They **will not be able to decrypt the password**, as the hashing process is a one-way function.
-* **Protection against Rainbow Tables:** Rainbow tables are huge databases containing precomputed hashes of common passwords. By generating a **unique Salt (random string) per user**, the final hash changes completely — even if two users have the exact same password (e.g., `123456`). This invalidates any precomputed table.
-* **Protection against Brute-Force Attacks:** The `PBKDF2` algorithm applies thousands of computation iterations (*rounds*), making attempts to guess passwords via brute force extremely slow and impractical for an attacker.
+- **Security against Database leaks:** If an attacker breaches the database and gains access to the user table, they will only see random character strings (_hash_ and _salt_). They **will not be able to decrypt the password**, as the hashing process is a one-way function.
+- **Protection against Rainbow Tables:** Rainbow tables are huge databases containing precomputed hashes of common passwords. By generating a **unique Salt (random string) per user**, the final hash changes completely — even if two users have the exact same password (e.g., `123456`). This invalidates any precomputed table.
+- **Protection against Brute-Force Attacks:** The `PBKDF2` algorithm applies thousands of computation iterations (_rounds_), making attempts to guess passwords via brute force extremely slow and impractical for an attacker.
 
 ---
 
@@ -137,7 +137,7 @@ The project combines two distinct authentication strategies depending on the req
 #### **A. Web Flow (Sessions + Cookies):**
 
 1. The user sends credentials in the login form.
-2. The `authenticate` function searches for the user in the database, retrieves the *salt*, and recalculates the *hash* of the provided password.
+2. The `authenticate` function searches for the user in the database, retrieves the _salt_, and recalculates the _hash_ of the provided password.
 3. If the hashes match, **Passport.js** steps in: it **serializes** the user ID and saves it to the session.
 4. The server sends a signed cookie containing the session ID to the browser.
 5. Protected Dashboard routes verify the session via cookie (`@fastify/session`), keeping the user logged in for **24 hours (1 day)**.
@@ -146,14 +146,14 @@ The project combines two distinct authentication strategies depending on the req
 
 1. On the `/api/auth/` route, the client sends their credentials and receives a signed **JWT token** in response.
 2. To access protected API routes (such as `/api/test`), the client must send the token in the HTTP header:
-`Authorization: Bearer <YOUR_JWT_TOKEN>`
-3. The middleware `preValidation: fastifyPassport.authenticate('jwt', { session: false })` validates the token signature before allowing access to the route, operating completely *stateless* (without saving a session on the server).
+   `Authorization: Bearer <YOUR_JWT_TOKEN>`
+3. The middleware `preValidation: fastifyPassport.authenticate('jwt', { session: false })` validates the token signature before allowing access to the route, operating completely _stateless_ (without saving a session on the server).
 
 ---
 
 ## ⚙️ Development Tips & Customization
 
-* **Alert Script on Dashboard:** If you want to implement interactions on the user panel (Dashboard) buttons, make sure to remove or disable the alert script (`<script>alert(...)</script>`) attached to the Dashboard HTML page.
-* **TypeScript Mode:** To build the project for production, use the configured compiler scripts (`npm run build`).
+- **Alert Script on Dashboard:** If you want to implement interactions on the user panel (Dashboard) buttons, make sure to remove or disable the alert script (`<script>alert(...)</script>`) attached to the Dashboard HTML page.
+- **TypeScript Mode:** To build the project for production, use the configured compiler scripts (`npm run build`).
 
 ---
