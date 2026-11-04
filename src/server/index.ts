@@ -7,7 +7,6 @@ import fastifyPassport from "@fastify/passport";
 import cors from "@fastify/cors";
 import "dotenv/config";
 import { AuthService } from "./services/authService.js";
-import ConnectSessionSequelizeFactory from "connect-session-sequelize";
 
 export default async function buildApp() {
   const app = fastify();
