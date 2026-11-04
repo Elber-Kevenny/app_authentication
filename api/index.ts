@@ -1,4 +1,4 @@
-import buildApp from "../src/server/index";
+import buildApp from "../src/server/index.js";
 
 let app: any;
 
