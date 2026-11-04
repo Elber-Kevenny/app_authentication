@@ -1,10 +1,11 @@
 import { Sequelize, Options } from "sequelize";
 import dotenv from "dotenv";
 import path from "node:path";
+import pg from "pg";
 
-const envFile = ".env.development";
-
-dotenv.config({ path: path.resolve(process.cwd(), envFile) });
+if (process.env.NODE_ENV !== "production") {
+  dotenv.config({ path: path.resolve(process.cwd(), ".env.development") });
+}
 
 const dbOptions: Options = {
   host: process.env.POSTGRES_HOST,
@@ -13,6 +14,7 @@ const dbOptions: Options = {
   database: process.env.POSTGRES_DB,
   port: Number(process.env.POSTGRES_PORT),
   dialect: "postgres",
+  dialectModule: pg,
 };
 
 const db = new Sequelize(dbOptions);
