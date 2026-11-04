@@ -25,8 +25,15 @@ export const sign = async (
       throw new Error("Passwords do not match");
     }
     const newAccount = await AuthService.register(username, password);
-    await request.logIn(newAccount);
-    return reply.status(201).send({ username: newAccount.username });
+    // await request.logIn(newAccount);
+    // return reply.status(201).send({ username: newAccount.username });
+    
+    const token = AuthService.signJWT(newAccount.username);
+
+    return reply.status(201).send({ 
+      username: newAccount.username, 
+      token 
+    });
   } catch (e: any) {
     console.error("error account creation:", e.message);
     return reply
@@ -35,14 +42,39 @@ export const sign = async (
   }
 };
 
+// export const authentication = async (
+//   request: FastifyRequest,
+//   reply: FastifyReply,
+// ) => {
+//   try {
+//     if (request.user) {
+//       return reply.status(201).send({ message: "Authentication Successfully" });
+//     }
+//   } catch (e: any) {
+//     return reply.status(401).send({
+//       statusCode: 401,
+//       message: "Authentication Failed!",
+//       error: e.message,
+//     });
+//   }
+// };
 export const authentication = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {
   try {
-    if (request.user) {
-      return reply.status(201).send({ message: "Authentication Successfully" });
+    const user = request.user as any;
+    if (!user) {
+      return reply.status(401).send({ message: "User not authenticated" });
     }
+
+    const token = AuthService.signJWT(user.username);
+
+    return reply.status(200).send({ 
+      message: "Authentication Successfully",
+      token,
+      username: user.username
+    });
   } catch (e: any) {
     return reply.status(401).send({
       statusCode: 401,
@@ -52,15 +84,42 @@ export const authentication = async (
   }
 };
 
+// export const getDashBoard = async (
+//   request: FastifyRequest,
+//   reply: FastifyReply,
+// ) => {
+//   const user = request.user as any;
+//   const isValid = request.isAuthenticated();
+//   if (!isValid || !user) {
+//     return reply.status(401).send({ message: "Unauthorized" });
+//   }
+//   reply.header(
+//     "Cache-Control",
+//     "no-store, no-cache, must-revalidate, proxy-revalidate",
+//   );
+//   reply.header("Pragma", "no-cache");
+//   reply.header("Expires", "0");
+
+//   const currentTime = new Date().toLocaleTimeString("pt-BR", {
+//     hour: "2-digit",
+//     minute: "2-digit",
+//   });
+
+//   return reply.status(200).send({
+//     username: user?.username,
+//     currentTime,
+//   });
+// };
 export const getDashBoard = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {
   const user = request.user as any;
-  const isValid = request.isAuthenticated();
-  if (!isValid || !user) {
+  
+  if (!user) {
     return reply.status(401).send({ message: "Unauthorized" });
   }
+
   reply.header(
     "Cache-Control",
     "no-store, no-cache, must-revalidate, proxy-revalidate",
@@ -74,7 +133,7 @@ export const getDashBoard = async (
   });
 
   return reply.status(200).send({
-    username: user?.username,
+    username: user.username,
     currentTime,
   });
 };
@@ -92,11 +151,14 @@ export const apiTest = async (
   return reply.send({ status: "Authenticated" });
 };
 
-export const logout = async (request: FastifyRequest, reply: FastifyReply) => {
-  await request.logOut();
+// export const logout = async (request: FastifyRequest, reply: FastifyReply) => {
+//   await request.logOut();
 
-  if (request.session) {
-    await request.session.destroy();
-  }
-  reply.clearCookie("sessionId");
+//   if (request.session) {
+//     await request.session.destroy();
+//   }
+//   reply.clearCookie("sessionId");
+// };
+export const logout = async (_request: FastifyRequest, reply: FastifyReply) => {
+  return reply.send({ success: true });
 };

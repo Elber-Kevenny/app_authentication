@@ -5,7 +5,6 @@ import { getUser, logoutUser } from "../fetch/api.js";
 
 interface User {
   username: string;
-  
 }
 
 export const Dashboard: React.FC<DashboardProps> = () => {
@@ -56,7 +55,7 @@ export const Dashboard: React.FC<DashboardProps> = () => {
   const handleLogout = async (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     try {
-      await logoutUser("/logout");
+      await logoutUser("/api/logout");
       navigate("/login");
     } catch (e: any) {
       console.error(e.message);

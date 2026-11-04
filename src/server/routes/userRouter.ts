@@ -7,7 +7,7 @@ export async function userRouter(app: any, _options: any) {
   app.post(
     "/auth",
     {
-      preValidation: fastifyPassport.authenticate("local", { authInfo: false }),
+      preValidation: fastifyPassport.authenticate("local", { session: false }),
     },
     userController.authentication,
   );
@@ -27,12 +27,21 @@ export async function userRouter(app: any, _options: any) {
   );
 
   app.get("/logout", userController.logout);
+
+
   app.get(
     "/dashboard",
     {
-      preValidation: fastifyPassport.authenticate("session"),
+      preValidation: fastifyPassport.authenticate("jwt", { session: false }),
     },
     userController.getDashBoard,
   );
+  // app.get(
+  //   "/dashboard",
+  //   {
+  //     preValidation: fastifyPassport.authenticate("session"),
+  //   },
+  //   userController.getDashBoard,
+  // );
   app.get("/status", getStatus);
 }
