@@ -11,7 +11,8 @@
     "skipLibCheck": true,
     "allowJs": true,
     "typeRoots": ["./node_modules/@types", "./src/types"],
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    
   },
   "include": ["src/**/*"]
 }

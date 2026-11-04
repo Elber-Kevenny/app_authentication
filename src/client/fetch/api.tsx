@@ -1,4 +1,5 @@
-const URLBASE = "http://localhost:3000";
+// @ts-ignore
+const URLBASE = import.meta.env.PROD ? "" : "http://localhost:3000";
 type User = {
   username: string;
   password: string;
