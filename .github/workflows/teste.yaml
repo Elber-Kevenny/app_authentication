@@ -1,0 +1,22 @@
+name: Automated tests
+
+on: pull_request
+
+jobs:
+  jest:
+    name: Jest ubuntu
+    runs-on: ubuntu-latest
+    
+    env:
+      SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: v20.19.4
+
+      - run: npm ci
+      - run: npm test

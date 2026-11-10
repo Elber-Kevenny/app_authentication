@@ -4,7 +4,10 @@ import path from "node:path";
 import pg from "pg";
 
 if (process.env.NODE_ENV !== "production") {
-  dotenv.config({ path: path.resolve(process.cwd(), ".env.development") });
+  dotenv.config({
+    path: path.resolve(process.cwd(), ".env.development"),
+    override: true,
+  });
 }
 
 const isRemoteDb =
