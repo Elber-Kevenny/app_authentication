@@ -14,7 +14,7 @@ export const getStatus = async (
     );
 
     const [connectionsResult] = await database.db.query(
-      "SELECT count(*)::int FROM pg_stat_activity WHERE datname = :dbName;",
+      "SELECT count(*)::int FROM pg_stat_activity WHERE datname = :dbName AND state = 'active';",
       {
         replacements: { dbName: databaseName },
       },
