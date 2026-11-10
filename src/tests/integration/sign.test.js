@@ -1,11 +1,12 @@
-import sequelizedb from "../server/db/db.js";
-import "../server/models/userModel.js";
+import sequelizedb from "../../server/db/db.js";
+import "../../server/models/userModel.js";
+import orchestrator from "../orchestrator.js";
 
 const { db } = sequelizedb;
 
 const cleanDatabase = async () => {
+  await orchestrator.waitforAllServices();
   await db.query("drop schema public cascade; create schema public");
-
   await db.sync({ force: true });
 };
 
