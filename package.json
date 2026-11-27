@@ -17,7 +17,8 @@
     "lint:prettier:check": "prettier --check .",
     "lint:prettier:write": "prettier --write .",
     "test": "npm run services:up && concurrently -k  --success \"command-JEST\" --names \"DEV,JEST\" \"npm run start:server \" \"node --experimental-vm-modules node_modules/jest/bin/jest.js src --runInBand --verbose\"",
-    "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js src --watchAll --runInBand"
+    "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js src --watchAll --runInBand",
+    "commit": "cz"
   },
   "author": "elber",
   "license": "ISC",
@@ -55,11 +56,17 @@
     "async-retry": "^1.3.3",
     "concurrently": "^9.2.5",
     "cross-env": "^10.1.0",
+    "cz-conventional-changelog": "^3.3.0",
     "prettier": "^3.9.10",
     "sass": "^1.107.1",
     "ts-jest": "^29.4.15",
     "tsx": "^4.23.15",
     "typescript": "^5.9.3",
     "vite": "^8.3.5"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
